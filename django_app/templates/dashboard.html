@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        /* *{
+            border: 1px dotted red;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row border-bottom border-dark">
+            <div class="col-8 mt-2">
+                <h1>Welcome, {{user_info.first_name}}!</h1>
+            </div>
+            <div class="col-2 mt-4">
+                <a href="/myaccount/{{user_info.id}}">Edit My Account</a>
+            </div>
+            <div class="col-2 mt-3">
+                <a class="btn btn-danger" href="/log_off" role="button">Log Off</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5 ">
+                <div class="d-flex justify-content-center mt-5 row">
+                    <h2>Quotes</h2>
+                </div>
+                {% for qoutes in all_quotes %}
+                <div class="row mt-3">
+                    <p>{{qoutes.author}} : 
+                        {{qoutes.description}}<br>
+                        Posted by <a href="/user/{{qoutes.posted_by.id}}">
+                        <u>{{qoutes.posted_by.first_name}} {{qoutes.posted_by.last_name}}</u></a><br>
+                            {{qoutes.users_who_like.count}} people like this<br>
+                        {% if user_info in qoutes.users_who_like.all %}
+                        {% else %}
+                        <a class="btn btn-primary mt-1" href="/add_to_liked/{{qoutes.id}}" role="button">Like!</a>
+                        {% endif %}
+                        {% if qoutes.posted_by.id == user_info.id %}
+                            <a href="/delete/{{qoutes.id}}"><u>Delete</u></a>
+                        {% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-2 ">
+            </div>
+            <div class="col-5 ">
+                <div class="d-flex justify-content-center mt-5">
+                    <h2>Add a Quote!</h2>
+                </div>
+                <form action="/add_quote" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" name="author" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Qoute</label>
+                        <input type="text" id="description" name="description" class="form-control">
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-dark btn-lg align-items-center">Submit</button>
+                    </div>
+                </form>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

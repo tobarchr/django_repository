@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Web Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="d-flex justify-content-around">
+        <div class="col-4 my-5">
+            <form action="/register" method="POST">
+                <h2 class="text-center">Registration</h2>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="registration_first_name">First Name</label>
+                    <input type="text" id="registration_first_name" name="first_name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="registration_last_name">Last Name</label>
+                    <input type="text" id="registration_last_name" name="last_name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="registration_email">Email</label>
+                    <input type="text" id="registration_email" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="registration_password">Password</label>
+                    <input type="Password" id="registration_password" name="password" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="registration_password_confirmation">Confirm PW</label>
+                    <input type="Password" id="registration_password_confirmation" name="password_confirmation"
+                        class="form-control">
+                </div>
+                <button type="submit" class="btn btn-outline-success btn-block">Register</button>
+            </form>
+            {% if messages %}
+            <ul class="messages mt-3 text-center list-unstyled">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}><h5 class="text-danger">{{ message }}</h5></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="col-4 my-5">
+            <form action='/login' method="POST">
+                <h2 class="text-center">Login</h2>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="login_email">Email</label>
+                    <input type="text" id="login_email" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="login_password">Password</label>
+                    <input type="password" id="login_password" name="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-outline-primary btn-block">Log In</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
